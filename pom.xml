@@ -16,10 +16,14 @@
     </properties>
 
     <repositories>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
         <!-- PlaceholderAPI Repo -->
         <repository>
             <id>placeholderapi</id>
-            <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
+            <url>https://repo.helpch.at/#/releases/</url>
         </repository>
         <!-- Spigot Repo -->
         <repository>
@@ -52,7 +56,7 @@
         <dependency>
             <groupId>me.clip</groupId>
             <artifactId>placeholderapi</artifactId>
-            <version>2.11.3</version>
+            <version>2.11.5</version>
             <scope>provided</scope>
         </dependency>
         <!-- bStats -->
@@ -90,6 +94,12 @@
             <artifactId>HikariCP</artifactId>
             <version>5.1.0</version>
         </dependency>
+        <!-- folia-scheduler-wrapper -->
+	    <dependency>
+	        <groupId>com.github.NahuLD.folia-scheduler-wrapper</groupId>
+	        <artifactId>folia-scheduler-wrapper</artifactId>
+	        <version>v0.0.3</version>
+	    </dependency>
     </dependencies>
 
     <build>
