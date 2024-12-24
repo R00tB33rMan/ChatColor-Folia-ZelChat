@@ -1,5 +1,5 @@
-# ChatColor
-Plugin for Spigot that allows you to create patterns and colors for the chat
+# ChatColor-Folia
+Plugin for Folia that allows you to create patterns and colors for the chat
 
 ## Commands
 
