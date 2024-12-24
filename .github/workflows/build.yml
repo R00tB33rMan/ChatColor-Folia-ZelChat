@@ -14,5 +14,6 @@ jobs:
     with:
       repository: "Dungjava/ChatColor-Folia"
       name: "ChatColor-Folia"
-      java: 17
+      target: "target/*.jar"
+      java: 21
  
