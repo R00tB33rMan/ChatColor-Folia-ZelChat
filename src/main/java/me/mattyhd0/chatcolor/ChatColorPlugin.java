@@ -142,7 +142,7 @@ public class ChatColorPlugin extends JavaPlugin {
                         }
                     });
                 } else {
-                    Bukkit.getScheduler().runTask(this, () -> { // Switch to main thread
+                    ChatColorPlugin.plugin.getScheduler().runTask(() -> { // Switch to main thread
                         String message = Util.color(prefix + " &7Could not verify if you are using the latest version of ChatColor :(");
                         String message2 = Util.color(prefix + " &7You can disable update checker in config.yml file");
                         Bukkit.getConsoleSender().sendMessage(message);
