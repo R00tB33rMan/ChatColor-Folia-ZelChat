@@ -37,7 +37,7 @@ public class ChatColorPlaceholders extends PlaceholderExpansion {
 
     public String onPlaceholderRequest(Player player, @NotNull String identifier) {
 
-        CPlayer cPlayer = ChatColorPlugin.getInstance().getDataMap().get(player.getUniqueId());
+        CPlayer cPlayer = (player != null) ? ChatColorPlugin.getInstance().getDataMap().get(player.getUniqueId()) : null;
 
         if (cPlayer == null) {
             return "";
@@ -53,7 +53,7 @@ public class ChatColorPlaceholders extends PlaceholderExpansion {
             case "kyori_pattern" -> {
                 var name = cPlayer.getPattern().getName(false);
                 var color = ChatColorPlugin.getInstance().getConfigurationManager().getPatterns().getString(name + ".kyori");
-                yield color == null ? "" : color;
+                yield color == null ? "" : color.replace("[", "").replace("]", "");
             }
             default -> "";
         };

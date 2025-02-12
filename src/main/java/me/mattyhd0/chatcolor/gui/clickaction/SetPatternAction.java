@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 
 public class SetPatternAction implements GuiClickAction {
 
-    private String patternName;
+    private final String patternName;
 
     public SetPatternAction(String patternName){
         this.patternName = patternName;
@@ -18,7 +18,7 @@ public class SetPatternAction implements GuiClickAction {
     public void execute(Player player) {
 
         BasePattern pattern = ChatColorPlugin.getInstance().getPatternManager().getPatternByName(patternName);
-        CPlayer cPlayer = ChatColorPlugin.getInstance().getDataMap().get(player.getUniqueId());
+        CPlayer cPlayer = (player != null) ? ChatColorPlugin.getInstance().getDataMap().get(player.getUniqueId()) : null;
         if(cPlayer != null) cPlayer.setPattern(pattern);
     }
 }
