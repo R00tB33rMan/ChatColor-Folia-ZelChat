@@ -8,7 +8,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
+import me.nahu.scheduler.wrapper.WrappedJavaPlugin;
+import me.nahu.scheduler.wrapper.WrappedScheduler;
+import me.nahu.scheduler.wrapper.task.WrappedTask;
+import me.nahu.scheduler.wrapper.runnable.WrappedRunnable;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -131,32 +134,24 @@ public class GuiBuilder {
         }
 
         for(Map.Entry<Integer, ItemStack> entry: guiItems.entrySet()){
-
             try {
                 gui.setItem(entry.getKey(), entry.getValue());
             } catch (ArrayIndexOutOfBoundsException exception){
                 exception.printStackTrace();
             }
-
-
         }
 
         player.closeInventory();
         GuiListener.setPlayerOpenedGui(player, this);
         player.openInventory(gui);
-
     }
 
-    public void open(Player player, long delay){
-
-        new BukkitRunnable(){
+    public void open(Player player, long delay) {
+        ChatColorPlugin.plugin.getScheduler().runTaskLater(new Runnable() {
             @Override
             public void run() {
                 open(player);
             }
-        }.runTaskLater(ChatColorPlugin.getInstance(), delay);
-
-
+        }, delay);
     }
-
 }

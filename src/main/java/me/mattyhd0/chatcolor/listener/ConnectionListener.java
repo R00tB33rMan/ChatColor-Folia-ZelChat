@@ -14,8 +14,12 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
+
+import me.nahu.scheduler.wrapper.WrappedJavaPlugin;
+import me.nahu.scheduler.wrapper.WrappedScheduler;
+import me.nahu.scheduler.wrapper.task.WrappedTask;
+import me.nahu.scheduler.wrapper.runnable.WrappedRunnable;
+
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -26,7 +30,8 @@ import java.util.UUID;
 
 public class ConnectionListener implements Listener {
     private ChatColorPlugin plugin;
-    private HashMap<UUID, BukkitTask> playersBeingLoaded = new HashMap<>();
+    private WrappedTask task;
+    private HashMap<UUID, WrappedTask> playersBeingLoaded = new HashMap<>();
 
     public ConnectionListener(ChatColorPlugin plugin) {
         this.plugin = plugin;
@@ -38,27 +43,23 @@ public class ConnectionListener implements Listener {
         Player player = event.getPlayer();
 
         if (player.hasPermission("chatcolor.updatenotify") && ChatColorPlugin.getInstance().getConfigurationManager().getConfig().getBoolean("config.update-checker")) {
-            Bukkit.getScheduler().runTaskAsynchronously(ChatColorPlugin.getInstance(), () -> {
+            ChatColorPlugin.plugin.getScheduler().runTaskAsynchronously(() -> {
                 UpdateChecker updateChecker = new UpdateChecker(ChatColorPlugin.getInstance(), 93186);
-
+        
                 if (!player.isOnline()) return;
-
+        
                 if (updateChecker.requestIsValid()) {
-
                     if (!updateChecker.isRunningLatestVersion()) {
                         String message = ChatColor.translateAlternateColorCodes('&', "&8[&4&lC&c&lh&6&la&e&lt&2&lC&a&lo&b&ll&3&lo&1&lr&8] &7You are using version &a" + updateChecker.getVersion() + "&7 and the latest version is &a" + updateChecker.getLatestVersion());
                         String message2 = ChatColor.translateAlternateColorCodes('&', "&8[&4&lC&c&lh&6&la&e&lt&2&lC&a&lo&b&ll&3&lo&1&lr&8] &7You can download the latest version at: &a" + updateChecker.getSpigotResource().getDownloadUrl());
                         player.sendMessage(message);
                         player.sendMessage(message2);
                     }
-
                 } else {
-
                     String message = ChatColor.translateAlternateColorCodes('&', "&8[&4&lC&c&lh&6&la&e&lt&2&lC&a&lo&b&ll&3&lo&1&lr&8] &7Could not verify if you are using the latest version of ChatColor :(");
                     String message2 = ChatColor.translateAlternateColorCodes('&', "&8[&4&lC&c&lh&6&la&e&lt&2&lC&a&lo&b&ll&3&lo&1&lr&8] &7You can disable update checker in config.yml file");
                     player.sendMessage(message);
                     player.sendMessage(message2);
-
                 }
             });
         }
@@ -66,7 +67,7 @@ public class ConnectionListener implements Listener {
             playersBeingLoaded.remove(event.getPlayer().getUniqueId()).cancel();
         }
         int delay = Math.max(0, plugin.getConfigurationManager().getConfig().getInt("config.data-delay", 30));
-        BukkitTask task = new BukkitRunnable() {
+        task = new WrappedRunnable() {
             @Override
             public void run() {
                 if (ChatColorPlugin.getInstance().getConnectionPool() == null) {
@@ -96,7 +97,7 @@ public class ConnectionListener implements Listener {
                 }
                 playersBeingLoaded.remove(player.getUniqueId());
             }
-        }.runTaskLaterAsynchronously(plugin, delay);
+        }.runTaskLaterAsynchronously(ChatColorPlugin.plugin.getScheduler(), delay);
         playersBeingLoaded.put(player.getUniqueId(), task);
     }
 
@@ -108,15 +109,14 @@ public class ConnectionListener implements Listener {
         }
         CPlayer cPlayer = plugin.getDataMap().get(event.getPlayer().getUniqueId());
         if (plugin.getDataMap().containsKey(event.getPlayer().getUniqueId())) {
-            new BukkitRunnable() {
+            new WrappedRunnable() {
                 @Override
                 public void run() {
                     cPlayer.saveData();
                 }
-            }.runTaskAsynchronously(plugin);
+            }.runTaskAsynchronously(ChatColorPlugin.plugin.getScheduler());
         }
     }
-
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerQuitMonitor(PlayerQuitEvent event) {
         plugin.getDataMap().remove(event.getPlayer().getUniqueId());

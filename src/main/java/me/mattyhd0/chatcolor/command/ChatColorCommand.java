@@ -242,28 +242,25 @@ public class ChatColorCommand implements CommandExecutor, TabCompleter {
     }
 
     public void gui(Player player, String[] arg) {
-
         MessagesYMLFile messagesYMLFile = plugin.getConfigurationManager().getMessages();
-
+    
         if (player.hasPermission("chatcolor.gui")) {
-
-            if(arg.length == 1) {
-                if(plugin.getDataMap().containsKey(player.getUniqueId())) {
+            if (arg.length == 1) { // Check if arg has only one element
+                if (plugin.getDataMap().containsKey(player.getUniqueId())) {
                     player.sendMessage(messagesYMLFile.getMessage("commands.chatcolor.gui.gui-opened"));
                     ChatColorGUI.openGui(player);
-                }else {
+                } else {
                     player.sendMessage(
-                            plugin.getConfigurationManager().getMessages().getMessage("commands.chatcolor.player-not-loaded","%prefix% &cReconnect to the server. If issue persist, contact an administrator.")
-                                    .replaceAll("%player%", arg[1])
+                        plugin.getConfigurationManager().getMessages().getMessage("commands.chatcolor.player-not-loaded", "%prefix% &cReconnect to the server. If issue persist, contact an administrator.")
+                            .replaceAll("%player%", arg[1]) // This line should be modified
                     );
                 }
             } else {
                 player.sendMessage(
-                        messagesYMLFile.getMessage("other.correct-usage")
-                                .replaceAll("%command%", "/chatcolor gui")
+                    messagesYMLFile.getMessage("other.correct-usage")
+                        .replaceAll("%command%", "/chatcolor gui")
                 );
             }
-
         } else {
             this.noPermission(player);
         }
