@@ -68,14 +68,15 @@ public class ChatColorPlugin extends JavaPlugin {
         setupPlaceholderAPI();
     }
 
-    public void reload(){
+    public void reload() {
         configurationManager = new ConfigurationManager();
         patternManager = new PatternManager();
-        if(hikariConnectionPool != null){
+        if (hikariConnectionPool != null) {
             hikariConnectionPool.close();
             hikariConnectionPool = null;
         }
-        if(configurationManager.getConfig().getBoolean("config.mysql.enable")) openMysqlConnection();
+
+        if (configurationManager.getConfig().getBoolean("config.mysql.enable")) openMysqlConnection();
     }
     
     public void onDisable() {
@@ -88,23 +89,7 @@ public class ChatColorPlugin extends JavaPlugin {
         }
     }
 
-    public void setupListeners(){
-
-        EventPriority priority = configurationManager.getConfig().contains("config.listener-priority") ?
-                EventPriority.valueOf(configurationManager.getConfig().getString("config.listener-priority")) :
-                EventPriority.LOW;
-
-
-
-        getServer().getPluginManager().registerEvent(
-                AsyncPlayerChatEvent.class,
-                new Listener() {},
-                priority,
-                new ChatListener(this),
-                this
-
-        );
-       //getServer().getPluginManager().registerEvents(new ChatListener(), this);
+    public void setupListeners() {
         getServer().getPluginManager().registerEvents(new ConnectionListener(this), this);
         getServer().getPluginManager().registerEvents(new GuiListener(), this);
     }
@@ -198,7 +183,7 @@ public class ChatColorPlugin extends JavaPlugin {
             }
             connection.close();
 
-        } catch (SQLException e){
+        } catch (SQLException e) {
             Bukkit.getServer().getConsoleSender().sendMessage(
                     Util.color("&c[ChatColor] There was an error connecting to the MySQL Database")
             );
@@ -208,7 +193,7 @@ public class ChatColorPlugin extends JavaPlugin {
 
     }
 
-    public boolean supportPlugin(String plugin){
+    public boolean supportPlugin(String plugin) {
         return supportedPlugins.contains(plugin);
     }
 
@@ -228,7 +213,7 @@ public class ChatColorPlugin extends JavaPlugin {
         return patternManager;
     }
 
-    public void sendConsoleMessage(String message){
+    public void sendConsoleMessage(String message) {
         getServer().getConsoleSender().sendMessage(prefix+" "+Util.color(message));
     }
 

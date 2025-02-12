@@ -13,26 +13,28 @@ import java.sql.SQLException;
 public class CPlayer {
 
     public Player player;
-    private boolean modified = false;
+    private final boolean modified = false;
     private String lastMessage = null;
     private BasePattern basePattern;
 
-    public CPlayer(Player player, BasePattern basePattern){
+    public CPlayer(Player player, BasePattern basePattern) {
         this.player = player;
         this.basePattern = basePattern;
     }
+
     public BasePattern getPattern() {
         return basePattern;
     }
-    public void setPattern(BasePattern pattern){
+
+    public void setPattern(BasePattern pattern) {
         this.basePattern = pattern;
     }
 
-    public void disablePattern(){
+    public void disablePattern() {
         this.basePattern = null;
     }
 
-    public boolean canUsePattern(BasePattern pattern){
+    public boolean canUsePattern(BasePattern pattern) {
         return (pattern.getPermission() == null || player.hasPermission(pattern.getPermission()));
     }
 
@@ -44,7 +46,7 @@ public class CPlayer {
         return lastMessage == null ? "" : lastMessage;
     }
 
-    public void saveData(){
+    public void saveData() {
         if (ChatColorPlugin.getInstance().getConnectionPool() == null) {
             SimpleYMLConfiguration data = ChatColorPlugin.getInstance().getConfigurationManager().getData();
             data.set("data." + player.getUniqueId(), getPattern() == null ? null : getPattern().getName(false));
@@ -72,8 +74,6 @@ public class CPlayer {
                 );
                 e.printStackTrace();
             }
-
         }
     }
-
 }

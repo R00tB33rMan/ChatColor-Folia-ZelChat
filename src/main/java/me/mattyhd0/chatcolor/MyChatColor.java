@@ -29,51 +29,48 @@ public class MyChatColor {
         return applyHex(new String(b), player).replace(String.valueOf(Character.MIN_VALUE), "");
     }
 
-    public static String applyHex(String textToTranslate, Player player){
+    public static String applyHex(String textToTranslate, Player player) {
 
         Pattern pattern = Pattern.compile("&#[a-fA-F0-9]{6}");
         Matcher matcher = pattern.matcher(textToTranslate);
 
-        if(textToTranslate.length() > 0){
+        if (!textToTranslate.isEmpty()) {
 
             while (matcher.find()) {
 
-                String color = textToTranslate.substring(matcher.start()+1, matcher.end());
+                String color = textToTranslate.substring(matcher.start() +1, matcher.end());
 
                 try {
                     ChatColor md5Color = ChatColor.of(color);
-                    if(hasColorPermission(player, md5Color)){
-                        textToTranslate = textToTranslate.replace("&"+color, md5Color.toString());
+                    if (hasColorPermission(player, md5Color)) {
+                        textToTranslate = textToTranslate.replace("&" +color, md5Color.toString());
                     } else {
-                        textToTranslate = textToTranslate.replace("&"+color, "");
+                        textToTranslate = textToTranslate.replace("&" +color, "");
                     }
-                } catch (NoSuchMethodError ignored){
+                } catch (NoSuchMethodError ignored) {
                 }
 
                 matcher = pattern.matcher(textToTranslate);
-
             }
-
         }
 
         return textToTranslate;
-
     }
 
-    public static boolean isHex(ChatColor color){
+    public static boolean isHex(ChatColor color) {
         return (isColor(color) && color.getName().startsWith("#"));
     }
 
-    public static boolean isFormat(ChatColor color){
+    public static boolean isFormat(ChatColor color) {
         return (color.getColor() == null);
     }
 
-    public static boolean isColor(ChatColor color){
+    public static boolean isColor(ChatColor color) {
         return (color.getColor() != null);
     }
 
 
-    public static boolean hasColorPermission(Player player, ChatColor color){
+    public static boolean hasColorPermission(Player player, ChatColor color) {
         for (String permission: getPermissionsOf(color)){
             if(player.hasPermission(permission)){
                 return true;
@@ -83,21 +80,21 @@ public class MyChatColor {
         return false;
     }
 
-    public static String[] getPermissionsOf(ChatColor color){
+    public static String[] getPermissionsOf(ChatColor color) {
 
-        if(isHex(color)){
-            return new String[]{ "chatcolor.hex.*", "chatcolor.hex."+color.getName().replace("#", "") };
+        if (isHex(color)) {
+            return new String[] { "chatcolor.hex.*", "chatcolor.hex." +color.getName().replace("#", "") };
         }
 
-        if(isColor(color)){
-            return new String[]{ "chatcolor.color.*", "chatcolor.color."+color.getName()};
+        if (isColor(color)) {
+            return new String[]{ "chatcolor.color.*", "chatcolor.color." +color.getName()};
         }
 
-        if(isFormat(color)) {
-            return new String[]{ "chatcolor.format.*", "chatcolor.format."+color.getName()};
+        if (isFormat(color)) {
+            return new String[]{ "chatcolor.format.*", "chatcolor.format." +color.getName()};
         }
 
-        return new String[]{"chatcolor.unknown"};
+        return new String[] {"chatcolor.unknown"};
 
     }
 

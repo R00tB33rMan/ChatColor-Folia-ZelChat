@@ -21,54 +21,47 @@ public enum Version {
     V1_20,
     UNKNOWN;
 
-    /*private byte number;
-
-    private Version(int number){
-        this.number = (byte) number;
-    }*/
-
-    public static Version from(Server server){
+    public static Version from(Server server) {
 
         String[] version = server.getBukkitVersion().split("\\.");
         int versionNumber = Integer.parseInt(version[1]);
 
-        if(versionNumber < 7){
+        if (versionNumber < 7) {
             return LEGACY;
         }
 
-        if(versionNumber > 20){
+        if (versionNumber > 20) {
             return UNKNOWN;
         }
 
         return valueOf("V"+version[0]+"_"+version[1]);
-
     }
 
-    public boolean isBetween(Version from, Version to){
+    public boolean isBetween(Version from, Version to) {
         return this.ordinal() >= from.ordinal() && this.ordinal() <= to.ordinal();
     }
 
-    public boolean isNewerThan(Version version){
+    public boolean isNewerThan(Version version) {
         return this.ordinal() > version.ordinal();
     }
 
-    public boolean isNewerOrEqualsThan(Version version){
+    public boolean isNewerOrEqualsThan(Version version) {
         return this.ordinal() >= version.ordinal();
     }
 
-    public boolean isOlderThan(Version version){
+    public boolean isOlderThan(Version version) {
         return this.ordinal() < version.ordinal();
     }
 
-    public boolean isOlderOrEqualsThan(Version version){
+    public boolean isOlderOrEqualsThan(Version version) {
         return this.ordinal() <= version.ordinal();
     }
 
-    public boolean isSupportingRGB(){
+    public boolean isSupportingRGB() {
         return this.ordinal() >= V1_16.ordinal();
     }
 
-    public boolean hasNewMaterials(){
+    public boolean hasNewMaterials() {
         return this.ordinal() >= V1_13.ordinal();
     }
 
