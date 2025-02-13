@@ -14,13 +14,8 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
-
-import me.nahu.scheduler.wrapper.WrappedJavaPlugin;
-import me.nahu.scheduler.wrapper.WrappedScheduler;
 import me.nahu.scheduler.wrapper.task.WrappedTask;
 import me.nahu.scheduler.wrapper.runnable.WrappedRunnable;
-
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -45,9 +40,9 @@ public class ConnectionListener implements Listener {
         if (player.hasPermission("chatcolor.updatenotify") && ChatColorPlugin.getInstance().getConfigurationManager().getConfig().getBoolean("config.update-checker")) {
             ChatColorPlugin.plugin.getScheduler().runTaskAsynchronously(() -> {
                 UpdateChecker updateChecker = new UpdateChecker(ChatColorPlugin.getInstance(), 93186);
-        
+
                 if (!player.isOnline()) return;
-        
+
                 if (updateChecker.requestIsValid()) {
                     if (!updateChecker.isRunningLatestVersion()) {
                         String message = ChatColor.translateAlternateColorCodes('&', "&8[&4&lC&c&lh&6&la&e&lt&2&lC&a&lo&b&ll&3&lo&1&lr&8] &7You are using version &a" + updateChecker.getVersion() + "&7 and the latest version is &a" + updateChecker.getLatestVersion());
@@ -63,9 +58,11 @@ public class ConnectionListener implements Listener {
                 }
             });
         }
+
         if (playersBeingLoaded.containsKey(player.getUniqueId())) {
             playersBeingLoaded.remove(event.getPlayer().getUniqueId()).cancel();
         }
+
         int delay = Math.max(0, plugin.getConfigurationManager().getConfig().getInt("config.data-delay", 30));
         task = new WrappedRunnable() {
             @Override
@@ -117,11 +114,11 @@ public class ConnectionListener implements Listener {
             }.runTaskAsynchronously(ChatColorPlugin.plugin.getScheduler());
         }
     }
+
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerQuitMonitor(PlayerQuitEvent event) {
         plugin.getDataMap().remove(event.getPlayer().getUniqueId());
     }
-
 
     private String formatQuery(Player player, String string) {
         return formatQuery(player, string, null);
@@ -135,8 +132,8 @@ public class ConnectionListener implements Listener {
         string = pattern == null ? string : string.replaceAll("\\{pattern}", pattern.getName(false));
 
         return string
-                .replaceAll("\\{uuid}", uuid)
-                .replaceAll("\\{player}", name);
+            .replaceAll("\\{uuid}", uuid)
+            .replaceAll("\\{player}", name);
 
     }
 }

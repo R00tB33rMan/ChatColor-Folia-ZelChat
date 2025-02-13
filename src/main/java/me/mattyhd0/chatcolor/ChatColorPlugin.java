@@ -11,12 +11,13 @@ import me.mattyhd0.chatcolor.updatechecker.UpdateChecker;
 import me.mattyhd0.chatcolor.util.Util;
 import me.nahu.scheduler.wrapper.WrappedScheduler;
 import me.nahu.scheduler.wrapper.WrappedSchedulerBuilder;
-import me.nahu.scheduler.wrapper.task.WrappedTask;
 
 import org.bstats.bukkit.Metrics;
 import org.bukkit.command.ConsoleCommandSender;
 import me.mattyhd0.chatcolor.placeholderapi.ChatColorPlaceholders;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -239,6 +240,7 @@ public class ChatColorPlugin extends JavaPlugin {
     public HashMap<UUID, CPlayer> getDataMap() {
         return dataMap;
     }
+
     public WrappedScheduler getScheduler() { 
         return scheduler; 
     }

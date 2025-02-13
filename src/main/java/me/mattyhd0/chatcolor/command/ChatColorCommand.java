@@ -199,7 +199,7 @@ public class ChatColorCommand implements CommandExecutor, TabCompleter {
     }
     
     public void disable(Player player, String[] arg) {
-        if(plugin.getDataMap().containsKey(player.getUniqueId())) {
+        if (plugin.getDataMap().containsKey(player.getUniqueId())) {
             CPlayer cPlayer = plugin.getDataMap().get(player.getUniqueId());
             BasePattern pattern = cPlayer.getPattern();
             SimpleYMLConfiguration config = plugin.getConfigurationManager().getConfig();
@@ -252,7 +252,7 @@ public class ChatColorCommand implements CommandExecutor, TabCompleter {
                 } else {
                     player.sendMessage(
                         plugin.getConfigurationManager().getMessages().getMessage("commands.chatcolor.player-not-loaded", "%prefix% &cReconnect to the server. If issue persist, contact an administrator.")
-                            .replaceAll("%player%", arg[1]) // This line should be modified
+                            .replaceAll("%player%", arg[1])
                     );
                 }
             } else {
